@@ -1,16 +1,93 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>Lessons Checkout</title>
+    <script src="lessons.js"></script>
+    <link rel="stylesheet" href="lesson.css">
+    <script src="https://unpkg.com/vue"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
 </head>
+
 <body>
-    <div id="tutorapp"></div>
+    <div id="cw">
         <header>
-                <h1 v-text='sitename'></h1>
-                <img v-bind:src='logo'>
+            <h1 v-text='sitename'></h1>
+            <button @click='showcheckout'>{{cartlessoncount}}
+                <span class="fas fa-shopping-cart"></span> Checkout </button>
         </header>
+        <br>
+        <br>
+        <br>
+        <main>
+
+            <div v-for="lessons in lessons">
+                <h1>{{lessons.subject}}</h1>
+                <img v-bind:src='lessons.image' width="60px" height="" id="im">
+                <p>Price: {{lessons.price}}</p>
+                <p>{{lessons.location}}</p>
+                <h4>No of Spaces: {{lessons.spaces}}</h4>
+                <span v-for='n in lessons.rating'> <span class="fas fa-star"></span>
+                </span>
+                <span v-for='n in 5 - lessons.rating'> <span class="far fa-star"></span> </span>
+                <br>
+                <br>
+                <button @click='addlesson' :disabled='!canaddtocart'> <span class="fas fa-shopping-cart"> Add to
+                        cart </button>
+                <span v-if='lessons.spaces === cartlessoncount'> All out!</span>
+                <span v-else-if='lessons.spaces - cartlessoncount < 3'> Only {{lessons.spaces - cartlessoncount}}
+                    left!</span>
+                <span v-else> Buy now!</span>
+            </div>
+
+    </div>
+    </main>
+
+
+    <script>
+
+        let lessonapp = new Vue({
+            el: '#cw',
+            data: {
+                sitename: "Tuition booking",
+                showlessons: true,
+                lessons: lessons,
+                
+                
+
+                cart: [],
+                order: {
+
+
+                }
+            },
+            methods: {
+                addlesson() {
+                    this.cart.push(this.lessons.id)
+                },
+                showcheckout() {
+                    this.showlessons = this.showlessons ? false : true;
+                },
+
+            },
+            computed: {
+
+                cartlessoncount() {
+                    return this.cart.length || ''
+                },
+                canaddtocart() {
+                    return this.lessons.spaces > this.cartlessoncount;
+                }
+
+            }
+        });
+
+    </script>
 </body>
+
 </html>
