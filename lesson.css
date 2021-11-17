@@ -1,0 +1,24 @@
+#cw{
+    display: inline-block;
+    width: 30%;
+    
+}  
+
+#header{
+    display: flex;
+
+}
+
+#im{
+    flex-grow: 1;
+    margin-left:1%;
+    float: flex;
+    
+
+}
+
+#sub{
+    flex-grow: 1;
+    margin-top: 20%;
+    margin-left: 20px;
+}
