@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+  
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://unpkg.com/vue"></script>
+    <title>Lessons Coursework</title>
+    <link rel="stylesheet" href="lesson.css"> 
+    <script src="lessons.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+</head>
+
+<body>
+    <div id="lesson">
+        <header>
+            <h1 v-text='sitename'></h1>
+            <button @click='showcheckout'>{{cartlessoncount}}
+                <span class="fas fa-shopping-cart"></span> Checkout </button>
+            <img v-bind:src='logo' id="im">
+        </header>
+        <div v-if='showlessons'>
+            <div v-for='lessons in sortedlessons'>
+                <main>
+                    <h1 v-text="lessons.subject"></h1>
+                    <img v-bind:src='lessons.image' width="60px" height="60px">
+                    <p v-html="lessons.price"></p>
+                    <p v-html="lessons.location"></p>
+                    <h4>No of Spaces: {{lessons.spaces}}</h4>
+
+                    <span v-for='n in lessons.rating'> <span class="fas fa-star"></span>
+                    </span>
+                    <span v-for='n in 5 - lessons.rating'> <span class="far fa-star"></span> </span>
+                    <br>
+                    <br>
+                    <button @click='addlesson(lessons)' :disabled='!canaddtocart(lessons)'> <span class="fas fa-shopping-cart">
+                            Add to
+                            cart </button>
+                    <span v-if='lessonsleft(lessons) === 0'> All out!</span>
+                    <span v-else-if='lessonsleft (lessons) < 3'> Only {{lessonsleft(lessons)}}
+                        left!</span>
+                    <span v-else> Buy now!</span>
+            </div>
+        </div>
+        <div v-else>
+            <h1> Checkout </h1>
+            <p><strong>Please select</strong>
+                <select v-model='order.gender'>
+                    <option disabled value=""></option>
+                    <option value="Mr"> Mr </option>
+                    <option value="Ms"> Ms </option>
+                </select>
+            </p>
+            <p>
+                <strong>First name:</strong>
+                <input v-model='order.firstname'>
+            </p>
+            <p>
+                <strong>Last name:</strong>
+                <input v-model='order.lastname'>
+            </p>
+            <p>
+                <strong> Phone number </strong>
+                <input v-model.number='order.phonenum'>
+            </p>
+            
+            <h3> Order Information </h3>
+            <p> First name: {{order.firstname}} </p>
+            <p> Last name: {{order.lastname}} </p>
+            <p> Mobile number: {{order.phonenum}} </p>
+            <p> Gender: {{order.gender}} </p>
+
+            <button @click='submitform'> Place order </button>
+        </div>
+        </main>
+
+    </div>
+
+    <script>
+        let tutorapp = new Vue({
+            el: '#lesson',
+            data: {
+                sitename: "Tuition Booking",
+                showlessons: true,
+                sortedlessons: lessons,
+                logo: 'icons/tutor logo.jpg',
+                // lesson: {
+                //     id: 1001,
+                //     subject: "English",
+                //     location: "England",
+                //     price: 1.99,
+                //     spaces: 5,
+                //     image: 'icons/english icon.jpg',
+                //     rating: 1,
+                // },
+                cart: [],
+                order: {
+                    firstname: '',
+                    lastname: '',
+                    phonenum: 44,
+                    gender: ''
+                }
+            },
+            methods: {
+                addlesson(lessons) {
+                    this.cart.push(lessons.id)
+                },
+                showcheckout() {
+                    this.showlessons = this.showlessons ? false : true;
+                },
+                submitform() {
+                    alert('Thank you! Order submitted.')
+                },
+                canaddtocart(lessons) {
+                    return lessons.spaces > this.cartcount(lessons.id);
+                },
+                cartcount(id) {
+                    let count = 0
+                    for (let i = 0; i < this.cart.length; i++) {
+                        if (this.cart[i] === id) {
+                            count++
+                        }
+                    }
+                    return count
+
+                },
+                lessonsleft (lessons){
+                    return lessons.spaces - this.cartcount(lessons.id)
+
+                }
+            },
+            computed: {
+                cartlessoncount() {
+                    return this.cart.length || ''
+                },
+                sortedlessons(){
+                    function compare(a,b){
+                        if (a.price > b.price) return -1
+                        if (a.price < b.price) return 1
+                        return 0
+                    }
+                }
+
+
+            }
+        })
+    </script>
+
+
+
+</body>
+
+</html>
