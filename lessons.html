@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
-  
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <script src="https://unpkg.com/vue"></script>
     <title>Lessons Coursework</title>
-    <link rel="stylesheet" href="lesson.css"> 
+    <link rel="stylesheet" href="lesson.css">
     <script src="lessons.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
 </head>
@@ -18,10 +18,10 @@
             <h1 v-text='sitename'></h1>
             <button @click='showcheckout'>{{cartlessoncount}}
                 <span class="fas fa-shopping-cart"></span> Checkout </button>
-            <img v-bind:src='logo' id="im">
+            <img v-bind:src='logo' id="im" height="60px" width="60px">
         </header>
         <div v-if='showlessons'>
-            <div v-for='lessons in sortedlessons'>
+            <div v-for='lessons in lessons'>
                 <main>
                     <h1 v-text="lessons.subject"></h1>
                     <img v-bind:src='lessons.image' width="60px" height="60px">
@@ -45,6 +45,7 @@
         </div>
         <div v-else>
             <h1> Checkout </h1>
+
             <p><strong>Please select</strong>
                 <select v-model='order.gender'>
                     <option disabled value=""></option>
@@ -64,7 +65,7 @@
                 <strong> Phone number </strong>
                 <input v-model.number='order.phonenum'>
             </p>
-            
+
             <h3> Order Information </h3>
             <p> First name: {{order.firstname}} </p>
             <p> Last name: {{order.lastname}} </p>
@@ -73,6 +74,30 @@
 
             <button @click='submitform'> Place order </button>
         </div>
+
+
+
+
+        <div v-for='lessons in cart'>
+            <main>
+                <h1 v-text="lessons.subject"></h1>
+                <img v-bind:src='lessons.image' width="60px" height="60px">
+                <p v-html="lessons.price"></p>
+                <p v-html="lessons.location"></p>
+
+
+                <span v-for='n in lessons.rating'> <span class="fas fa-star"></span>
+                </span>
+                <span v-for='n in 5 - lessons.rating'> <span class="far fa-star"></span> </span>
+                <br>
+                <br>
+                <button @click='deletelesson(lessons)' > <span class="fas fa-shopping-cart">
+                        Delete from
+                        cart </button>
+
+        </div>
+
+
         </main>
 
     </div>
@@ -83,7 +108,7 @@
             data: {
                 sitename: "Tuition Booking",
                 showlessons: true,
-                sortedlessons: lessons,
+                lessons: lessons,
                 logo: 'icons/tutor logo.jpg',
                 // lesson: {
                 //     id: 1001,
@@ -104,7 +129,11 @@
             },
             methods: {
                 addlesson(lessons) {
-                    this.cart.push(lessons.id)
+                    --lessons.spaces
+                    this.cart.push(lessons)
+                },
+                deletelesson(lessons){
+                    this.cart.lessons-1
                 },
                 showcheckout() {
                     this.showlessons = this.showlessons ? false : true;
@@ -113,6 +142,7 @@
                     alert('Thank you! Order submitted.')
                 },
                 canaddtocart(lessons) {
+
                     return lessons.spaces > this.cartcount(lessons.id);
                 },
                 cartcount(id) {
@@ -122,10 +152,10 @@
                             count++
                         }
                     }
-                    return count
+                    return count;
 
                 },
-                lessonsleft (lessons){
+                lessonsleft(lessons) {
                     return lessons.spaces - this.cartcount(lessons.id)
 
                 }
@@ -134,14 +164,6 @@
                 cartlessoncount() {
                     return this.cart.length || ''
                 },
-                sortedlessons(){
-                    function compare(a,b){
-                        if (a.price > b.price) return -1
-                        if (a.price < b.price) return 1
-                        return 0
-                    }
-                }
-
 
             }
         })
