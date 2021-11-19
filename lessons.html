@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
+<head> 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="lesson.css">
     <script src="lessons.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
-</head> 
+</head>
 
 <body>
     <div id="lesson">
@@ -18,7 +18,7 @@
             <h1 v-text='sitename'></h1>
             <button @click='showcheckout'>{{cartlessoncount}}
                 <span class="fas fa-shopping-cart"></span> Checkout </button>
-            <img v-bind:src='logo' id="im" height="60px" width="60px">
+            <img v-bind:src='logo' id="im">
         </header>
         <div v-if='showlessons'>
             <div v-for='lessons in lessons'>
@@ -132,8 +132,12 @@
                     --lessons.spaces
                     this.cart.push(lessons)
                 },
-                deletelesson(lessons){
-                    this.cart.lessons-1
+                deletelesson(lessons)  {
+                    let index = this.cart.indexOf(lessons)
+
+                    
+                    this.cart.splice(index,1)
+                    
                 },
                 showcheckout() {
                     this.showlessons = this.showlessons ? false : true;
