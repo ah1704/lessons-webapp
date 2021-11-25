@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head> 
+<head>  
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -16,7 +16,7 @@
     <div id="lesson">
         <header>
             <h1 v-text='sitename'></h1>
-            <button @click='showcheckout'>{{cartlessoncount}}
+            <button @click='showcheckout'  >{{cartlessoncount}}
                 <span class="fas fa-shopping-cart"></span> Checkout </button>
             <img v-bind:src='logo' id="im">
         </header>
@@ -135,7 +135,7 @@
                 deletelesson(lessons)  {
                     let index = this.cart.indexOf(lessons)
 
-                    
+                    lessons.spaces++
                     this.cart.splice(index,1)
                     
                 },
