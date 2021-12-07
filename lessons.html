@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>  
+  
+<head> 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -16,12 +16,13 @@
     <div id="lesson">
         <header>
             <h1 v-text='sitename'></h1>
-            <button @click='showcheckout'  >{{cartlessoncount}}
+            <button @click='showcheckout' v-show="!cartEmpty">{{cartlessoncount}}
                 <span class="fas fa-shopping-cart"></span> Checkout </button>
             <img v-bind:src='logo' id="im">
         </header>
         <div v-if='showlessons'>
             <div v-for='lessons in lessons'>
+                
                 <main>
                     <h1 v-text="lessons.subject"></h1>
                     <img v-bind:src='lessons.image' width="60px" height="60px">
@@ -45,7 +46,8 @@
         </div>
         <div v-else>
             <h1> Checkout </h1>
-
+            <button @click='showcheckout'>{{cartlessoncount}}
+                <span class="fas fa-shopping-cart"></span> Checkout </button>
             <p><strong>Please select</strong>
                 <select v-model='order.gender'>
                     <option disabled value=""></option>
@@ -91,7 +93,7 @@
                 <span v-for='n in 5 - lessons.rating'> <span class="far fa-star"></span> </span>
                 <br>
                 <br>
-                <button @click='deletelesson(lessons)' > <span class="fas fa-shopping-cart">
+                <button @click='deletelesson(lessons)'> <span class="fas fa-shopping-cart">
                         Delete from
                         cart </button>
 
@@ -110,34 +112,25 @@
                 showlessons: true,
                 lessons: lessons,
                 logo: 'icons/tutor logo.jpg',
-                // lesson: {
-                //     id: 1001,
-                //     subject: "English",
-                //     location: "England",
-                //     price: 1.99,
-                //     spaces: 5,
-                //     image: 'icons/english icon.jpg',
-                //     rating: 1,
-                // },
                 cart: [],
                 order: {
                     firstname: '',
                     lastname: '',
                     phonenum: 44,
                     gender: ''
-                }
+                }   
             },
             methods: {
                 addlesson(lessons) {
                     --lessons.spaces
                     this.cart.push(lessons)
                 },
-                deletelesson(lessons)  {
+                deletelesson(lessons) {
                     let index = this.cart.indexOf(lessons)
 
                     lessons.spaces++
-                    this.cart.splice(index,1)
-                    
+                    this.cart.splice(index, 1)
+
                 },
                 showcheckout() {
                     this.showlessons = this.showlessons ? false : true;
@@ -167,6 +160,9 @@
             computed: {
                 cartlessoncount() {
                     return this.cart.length || ''
+                },
+                cartEmpty() {
+                    return this.cart.length == 0;
                 },
 
             }
